@@ -107,72 +107,32 @@
   </div>
   <h2 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-8 italic drop-shadow-[0_0_15px_rgba(168,85,247,0.8)]">NEON NETWORK (Max 4P)</h2>
   
-  <div class="flex flex-col md:flex-row gap-6 w-full max-w-6xl h-[55vh]">
-    <!-- Rooms & Invites List -->
-    <div class="flex-1 flex flex-col gap-4">
-        <div class="flex-1 bg-gray-950/80 border-2 border-purple-500/50 p-4 flex flex-col shadow-[0_0_15px_rgba(168,85,247,0.3)]">
-          <div class="flex justify-between items-center border-b border-purple-500/30 pb-2 mb-4">
-            <h3 class="text-purple-400 font-bold tracking-widest">ACTIVE ROOMS</h3>
-            <button onclick="createRoom()" class="bg-purple-600 px-4 py-2 text-sm font-bold text-white hover:bg-purple-400 transition-colors shadow-[0_0_10px_#a855f7]">CREATE ROOM</button>
-          </div>
-          <div id="roomListContainer" class="flex-1 overflow-y-auto flex flex-col gap-3 pr-2"></div>
-        </div>
+  <div class="flex flex-col md:flex-row gap-6 w-full max-w-6xl h-[60vh]">
+    <!-- Rooms List -->
+    <div class="flex-1 bg-gray-950/80 border-2 border-purple-500/50 p-4 flex flex-col shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+      <div class="flex justify-between items-center border-b border-purple-500/30 pb-2 mb-4">
+        <h3 class="text-purple-400 font-bold tracking-widest">ACTIVE ROOMS</h3>
+        <button onclick="createRoom()" class="bg-purple-600 px-4 py-2 text-sm font-bold text-white hover:bg-purple-400 transition-colors shadow-[0_0_10px_#a855f7]">CREATE ROOM</button>
+      </div>
+      <div id="roomListContainer" class="flex-1 overflow-y-auto flex flex-col gap-3 pr-2"></div>
     </div>
     
-    <!-- Players & Leaderboard -->
-    <div class="flex-[1.2] flex flex-col gap-4">
-        <!-- Online Players (Friends & Strangers) -->
-        <div class="flex-1 bg-gray-950/80 border-2 border-blue-500/50 p-4 flex flex-col shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-            <h3 class="text-blue-400 font-bold tracking-widest border-b border-blue-500/30 pb-2 mb-4">ONLINE RACERS</h3>
-            <div id="onlinePlayersList" class="flex-1 overflow-y-auto flex flex-col gap-2 pr-2 text-sm"></div>
-        </div>
-        
-        <!-- Global Leaderboard -->
-        <div class="flex-1 bg-gray-950/80 border-2 border-yellow-500/50 p-4 flex flex-col shadow-[0_0_15px_rgba(234,179,8,0.3)]">
-          <h3 class="text-yellow-400 font-bold tracking-widest border-b border-yellow-500/30 pb-2 mb-4">GLOBAL LEADERBOARD</h3>
-          <div id="leaderboardList" class="flex-1 overflow-y-auto flex flex-col gap-2 pr-2 font-mono text-sm"></div>
-        </div>
+    <!-- Leaderboard -->
+    <div class="flex-1 bg-gray-950/80 border-2 border-yellow-500/50 p-4 flex flex-col shadow-[0_0_15px_rgba(234,179,8,0.3)]">
+      <h3 class="text-yellow-400 font-bold tracking-widest border-b border-yellow-500/30 pb-2 mb-4">GLOBAL LEADERBOARD</h3>
+      <div id="leaderboardList" class="flex-1 overflow-y-auto flex flex-col gap-2 pr-2 font-mono"></div>
     </div>
   </div>
-
-  <!-- Notification / Challenge Alerts -->
-  <div id="challengeAlerts" class="w-full max-w-6xl mt-4 flex flex-col gap-2 z-50"></div>
-  
-  <button onclick="closeLobby()" class="absolute bottom-6 px-8 py-3 bg-transparent border-2 border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-white transition-all font-bold tracking-widest uppercase">BACK TO MENU</button>
+  <button onclick="closeLobby()" class="absolute bottom-10 px-8 py-3 bg-transparent border-2 border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-white transition-all font-bold tracking-widest uppercase">BACK TO MENU</button>
 </div>
 
-<!-- WAITING FOR JOIN MODAL -->
-<div id="waitingJoinModal" class="absolute inset-0 bg-black/95 z-[65] flex flex-col items-center justify-center hidden backdrop-blur-md">
-    <div class="text-4xl text-cyan-400 font-black mb-6 animate-pulse">REQUEST PENDING...</div>
-    <div class="text-gray-400 mb-8">방장의 수락을 기다리고 있습니다.</div>
-    <button onclick="cancelJoin()" class="px-6 py-3 border-2 border-red-500 text-red-400 hover:bg-red-500 hover:text-white transition-all font-bold">CANCEL REQUEST</button>
-</div>
-
-<!-- CURRENT WAITING ROOM MODAL (HOST & PLAYERS) -->
-<div id="roomModal" class="absolute inset-0 bg-black/95 z-[60] flex flex-col items-center justify-start py-12 px-4 hidden backdrop-blur-md">
+<!-- CURRENT WAITING ROOM MODAL -->
+<div id="roomModal" class="absolute inset-0 bg-black/95 z-[60] flex flex-col items-center justify-center hidden backdrop-blur-md">
   <h2 class="text-4xl text-purple-400 mb-8 italic font-black drop-shadow-[0_0_15px_#a855f7]">WAITING ROOM</h2>
-  
-  <div class="flex w-full max-w-6xl h-[60vh] gap-6">
-      <!-- Players and Join Requests -->
-      <div class="flex-[2] bg-gray-950/80 border-2 border-purple-500 p-6 shadow-[0_0_15px_#a855f7] flex flex-col">
-          <h3 class="text-white font-bold tracking-widest border-b border-purple-500/50 pb-2 mb-4">PLAYERS IN ROOM</h3>
-          <div id="roomPlayerList" class="flex gap-4 flex-wrap mb-auto"></div>
-          
-          <!-- Join Requests (Host Only) -->
-          <div id="roomJoinReqs" class="mt-4 hidden border-t border-purple-500/50 pt-4">
-             <h3 class="text-yellow-400 font-bold mb-2">JOIN REQUESTS (HOST ONLY)</h3>
-             <div id="joinReqList" class="flex flex-col gap-2 overflow-y-auto max-h-32"></div>
-          </div>
-      </div>
-      
-      <!-- Invite Friends Panel (Host Only) -->
-      <div id="roomInvitePanel" class="flex-1 bg-gray-950/80 border-2 border-pink-500 p-6 shadow-[0_0_15px_#ec4899] hidden flex-col">
-          <h3 class="text-pink-400 font-bold tracking-widest border-b border-pink-500/50 pb-2 mb-4">INVITE FRIENDS</h3>
-          <div id="roomFriendList" class="flex flex-col gap-2 overflow-y-auto h-full text-sm"></div>
-      </div>
+  <div id="roomPlayerList" class="flex gap-4 mb-10 w-full max-w-4xl justify-center flex-wrap">
+    <!-- Player cards rendered here -->
   </div>
-
-  <div class="flex gap-6 mt-8">
+  <div class="flex gap-6">
     <button id="btnStartRoom" onclick="startRoomGame()" class="hidden px-8 py-4 bg-purple-600 border-2 border-purple-400 text-white font-bold tracking-widest uppercase hover:bg-purple-500 transition-all shadow-[0_0_15px_#a855f7] text-xl">START RACE</button>
     <button onclick="leaveRoom()" class="px-8 py-4 border-2 border-gray-500 text-gray-400 font-bold tracking-widest uppercase hover:bg-gray-700 hover:text-white transition-all text-xl">LEAVE ROOM</button>
   </div>
@@ -246,12 +206,6 @@
 <div id="floatingTextContainer" class="absolute inset-0 pointer-events-none overflow-hidden z-10"></div>
 <div id="nameTagContainer" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
 
-<!-- Multiplayer Respawn UI -->
-<div id="respawnUI" class="absolute inset-0 flex flex-col items-center justify-center z-[35] pointer-events-none hidden bg-red-950/40 backdrop-blur-sm">
-    <div class="text-6xl font-black text-red-500 italic drop-shadow-[0_0_15px_#ef4444]">CRASHED!</div>
-    <div class="text-3xl font-bold text-white mt-4">RESPAWNING IN <span id="respawnCount" class="text-yellow-400 font-mono text-5xl">5</span>...</div>
-</div>
-
 <div id="powerupUI" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 z-20 pointer-events-none">
   <div id="magnetUI" class="hidden bg-purple-900/80 border-2 border-purple-400 px-4 py-2 text-purple-200 font-bold italic shadow-[0_0_15px_#a855f7]">MAGNET <span id="magnetTime">8.0</span>s</div>
   <div id="shieldUI" class="hidden bg-yellow-900/80 border-2 border-yellow-400 px-4 py-2 text-yellow-200 font-bold italic shadow-[0_0_15px_#facc15]">SHIELD <span id="shieldTime">6.0</span>s</div>
@@ -320,8 +274,8 @@
   let isGameStarted = false, isGameOver = false, isPaused = false;
   let currentMode = 'SOLO'; 
   
-  // --- Multiplayer Globals & Firebase Compliance ---
-  const FB_APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'neon-rider-room-multi-friends-v1';
+  // --- Multiplayer Globals (Up to 4P Room System) ---
+  const FB_APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'neon-rider-room-multi';
   let fsMod = null, fbDb = null, fbAuth = null;
   let myUid = null;
   let myProfile = null;
@@ -336,10 +290,6 @@
   
   let authType = 'login'; 
   let myGlobalScore = 0;
-  
-  // Respawn Variables
-  let isRespawning = false;
-  let respawnTimer = 0;
   // -------------------------------------------------------
   
   let totalCoins = 0;
@@ -394,8 +344,7 @@
     speedVignette: document.getElementById('speedVignette'), jumpText: document.getElementById('jumpText'), floatingContainer: document.getElementById('floatingTextContainer'), highScoreUI: document.getElementById('highScoreUI'),
     highScoreText: document.getElementById('highScoreText'), magnetUI: document.getElementById('magnetUI'), magnetTime: document.getElementById('magnetTime'), shieldUI: document.getElementById('shieldUI'), shieldTime: document.getElementById('shieldTime'),
     mmTotalCoins: document.getElementById('mmTotalCoins'), garageTotalCoins: document.getElementById('garageTotalCoins'), runCoinsText: document.getElementById('runCoinsText'), goCoinsText: document.getElementById('goCoinsText'),
-    goBonusText: document.getElementById('goBonusText'), nameTagContainer: document.getElementById('nameTagContainer'),
-    respawnUI: document.getElementById('respawnUI'), respawnCount: document.getElementById('respawnCount')
+    goBonusText: document.getElementById('goBonusText'), nameTagContainer: document.getElementById('nameTagContainer')
   };
 
   const canvas = document.getElementById('glCanvas');
@@ -412,14 +361,26 @@
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.7); scene.add(ambientLight);
   const dirLight = new THREE.DirectionalLight(0xffffff, 1.0); dirLight.position.set(0, 100, 50); scene.add(dirLight);
 
+  // --- AUDIO SETUP ---
   async function initAudio() {
     if (isSoundOn && !engineOsc) {
       await Tone.start();
+      
+      // 향상된 엔진 소리 (Distortion + Lowpass Filter + Sawtooth)
       engineFilter = new Tone.Filter(300, "lowpass").toDestination();
       const dist = new Tone.Distortion(0.5).connect(engineFilter);
       engineOsc = new Tone.Oscillator({ type: "sawtooth", frequency: 40, volume: -10 }).connect(dist);
+      
+      // 일반 코인 및 보너스용
       synthFX = new Tone.PolySynth(Tone.Synth).toDestination();
-      crashSynth = new Tone.NoiseSynth({ noise: { type: 'brown' }, envelope: { attack: 0.01, decay: 0.4, sustain: 0 } }).toDestination();
+      
+      // 강렬한 충돌 파열음
+      crashSynth = new Tone.NoiseSynth({ 
+        noise: { type: 'brown' }, 
+        envelope: { attack: 0.01, decay: 0.4, sustain: 0 } 
+      }).toDestination();
+      
+      // 점프 베이스 킥 사운드
       jumpSynth = new Tone.MembraneSynth({ pitchDecay: 0.05, octaves: 5 }).toDestination();
     }
   }
@@ -490,7 +451,7 @@
   const bannerTex = new THREE.CanvasTexture(bannerCanvas); bannerTex.wrapS = THREE.RepeatWrapping; bannerTex.repeat.set(4, 1);
   const banner = new THREE.Mesh(new THREE.PlaneGeometry(100, 10), new THREE.MeshBasicMaterial({ map: bannerTex, side: THREE.DoubleSide })); banner.position.set(0, 45, 0);
   finishLineGroup.add(leftPillar, rightPillar, banner); finishLineGroup.visible = false; scene.add(finishLineGroup);
-
+  
   function createBike(data, isDisplay = false) {
     const group = new THREE.Group();
     const mat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.8, roughness: 0.2 });
@@ -703,24 +664,25 @@
   }
 
   function openSettings() { isSettingsOpen = true; ui.mainMenu.style.display = 'none'; document.getElementById('settingsModal').style.display = 'flex'; setTimeout(() => { document.getElementById('settingsModal').classList.remove('hidden', 'opacity-0'); document.getElementById('settingsModal').classList.add('opacity-100', 'pointer-events-auto'); }, 10); updateSettingsUI(); }
-  function closeSettings() { isSettingsOpen = false; document.getElementById('settingsModal').classList.remove('opacity-100', 'pointer-events-auto'); document.getElementById('settingsModal').classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => { document.getElementById('settingsModal').classList.add('hidden'); document.getElementById('settingsModal').style.display = 'none'; ui.mainMenu.style.display = 'flex'; renderer.setClearColor(0x050208); renderer.clear(); }, 300); }
+  function closeSettings() { isSettingsOpen = false; document.getElementById('settingsModal').classList.remove('opacity-100', 'pointer-events-auto'); document.getElementById('settingsModal').classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => { document.getElementById('settingsModal').classList.add('hidden'); document.getElementById('settingsModal').style.display = 'none'; ui.mainMenu.style.display = 'flex'; }, 300); }
 
   function quitGameConfirm() { if (isGameOver) return; isPaused = true; if(engineOsc) engineOsc.stop(); document.getElementById('quitConfirmModal').style.display = 'flex'; document.getElementById('quitConfirmModal').classList.remove('hidden'); }
   function closeQuitConfirm() { document.getElementById('quitConfirmModal').style.display = 'none'; document.getElementById('quitConfirmModal').classList.add('hidden'); clock.getDelta(); isPaused = false; if(isSoundOn && engineOsc) engineOsc.start(); }
 
   window.logout = async function() {
-    if(fbAuth) { try { await fbAuth.signOut(); } catch(e) {} }
+    if(fbAuth) {
+        try { await fbAuth.signOut(); } catch(e) {}
+    }
     location.reload();
   };
 
   function returnToMenu() {
     ui.gameUI.style.display = 'none';
     ui.gameOver.style.display = 'none';
-    ui.respawnUI.style.display = 'none';
     document.getElementById('quitConfirmModal').classList.add('hidden');
     document.getElementById('quitConfirmModal').style.display = 'none';
     
-    isGameStarted = false; isGameOver = false; isPaused = false; hasFinished = false; isRespawning = false;
+    isGameStarted = false; isGameOver = false; isPaused = false; hasFinished = false;
     if(engineOsc) engineOsc.stop();
     
     ui.floatingContainer.innerHTML = '';
@@ -740,7 +702,7 @@
 
   const keys = { left: false, right: false, boost: false };
   window.addEventListener('keydown', (e) => { 
-    if(!isGameStarted || isRespawning) return; 
+    if(!isGameStarted) return; 
     if (controlScheme === 'ARROWS') {
       if(e.code === 'ArrowLeft') keys.left = true; 
       if(e.code === 'ArrowRight') keys.right = true; 
@@ -774,8 +736,6 @@
     
     currentMode = mode; isGameStarted = true; isGameOver = false; hasFinished = false; finishTimer = 0;
     isMagnetActive = false; magnetTimer = 0; ui.magnetUI.style.display = 'none'; isShieldActive = false; shieldTimer = 0; ui.shieldUI.style.display = 'none'; pShieldMesh.visible = false;
-    isRespawning = false; respawnTimer = 0; ui.respawnUI.style.display = 'none';
-    
     score = 0; hp = 100; nitro = 100; currentRunCoins = 0; updateCoinsUI();
     totalDistance = 0; currentLogicX = 0; isJumping = false; velocityY = 0; timer = 0;
     coinRowActive = false; coinRowZ = 0; coinRowIndex = 0;
@@ -798,19 +758,14 @@
     updateHP(); updateNitro(); ui.score.innerText = '0'; ui.timePanel.style.display = mode === 'TIME_ATTACK' ? 'flex' : 'none';
     if (mode === 'TIME_ATTACK') { ui.timerText.innerText = "00:00.00"; ui.bestTimeText.innerText = bestTime > 0 ? "BEST: " + formatTime(bestTime) : "BEST: --:--.--"; }
 
-    ui.mmPlayer.innerHTML = `<span class="absolute left-3 top-[-2px] text-[8px] text-cyan-200 drop-shadow-md font-bold whitespace-nowrap">${myProfile ? myProfile.nickname : 'P1'}</span>`;
-
     if (mode === 'RACE') {
       ui.rankPanel.style.display = 'block'; ui.minimapUI.style.display = 'block'; ui.highScoreUI.style.display = 'none'; ui.scorePanel.style.display = 'block';
       ui.rankTotalText.innerText = "/4";
-      opponents.forEach((op, idx) => { 
-          op.bike.group.visible = true; op.bike.shadowMesh.visible = true; op.bike.lightTrail.visible = true; op.zOffset = op.idealZ; op.x = (Math.random() - 0.5) * 40; op.baseSpeed = 190 + Math.random() * 60; op.speed = op.baseSpeed; op.mmDot.style.display = 'block'; 
-          op.mmDot.innerHTML = `<span class="absolute left-3 top-[-2px] text-[8px] text-white drop-shadow-md font-bold whitespace-nowrap">AI-${idx+1}</span>`;
-      });
+      opponents.forEach((op) => { op.bike.group.visible = true; op.bike.shadowMesh.visible = true; op.bike.lightTrail.visible = true; op.zOffset = op.idealZ; op.x = (Math.random() - 0.5) * 40; op.baseSpeed = 190 + Math.random() * 60; op.speed = op.baseSpeed; op.mmDot.style.display = 'block'; });
     } else if (mode === 'MULTI_RACE') {
       ui.rankPanel.style.display = 'block'; ui.minimapUI.style.display = 'block'; ui.highScoreUI.style.display = 'none'; ui.scorePanel.style.display = 'block';
       
-      opponents.forEach(op => { op.bike.group.visible = false; op.bike.shadowMesh.visible = false; op.bike.lightTrail.visible = false; op.mmDot.style.display = 'none'; op.mmDot.innerHTML = ''; });
+      opponents.forEach(op => { op.bike.group.visible = false; op.bike.shadowMesh.visible = false; op.bike.lightTrail.visible = false; op.mmDot.style.display = 'none'; });
       multiOpponentsMap = {};
       
       let opIndex = 0;
@@ -822,7 +777,6 @@
                  const op = opponents[opIndex];
                  const pName = activeRoom.players[uid].name;
                  op.bike.group.visible = true; op.bike.shadowMesh.visible = true; op.bike.lightTrail.visible = true; op.mmDot.style.display = 'block';
-                 op.mmDot.innerHTML = `<span class="absolute left-3 top-[-2px] text-[8px] text-white drop-shadow-md font-bold whitespace-nowrap">${pName}</span>`;
                  op.zOffset = 0; op.x = 0; op.speed = 170; op.bankAngle = 0;
                  multiOpponentsMap[uid] = op;
                  ui.nameTagContainer.innerHTML += `<div id="opTag_${uid}" class="name-tag text-purple-300 drop-shadow-[0_0_5px_#a855f7]">${pName}</div>`;
@@ -852,7 +806,7 @@
 
   function updateGarageView() { garageBikes.forEach((bike, idx) => { const isCurrent = (idx === currentGarageIndex); bike.group.visible = isCurrent; if (isCurrent) { bike.group.scale.set(0.1, 0.1, 0.1); bike.group.userData.targetScale = 1.0; } }); const data = bikeData[currentGarageIndex]; document.getElementById('garageBikeType').innerText = `CLASS: ${data.type}`; const titleEl = document.getElementById('garageBikeTitle'); titleEl.innerText = data.name; titleEl.className = `text-3xl md:text-5xl font-black italic mb-4 drop-shadow-[0_0_10px_currentColor] ${data.css}`; const btn = document.getElementById('garageEquipBtn'); if (ownedBikes.includes(currentGarageIndex)) { if (equippedBike === currentGarageIndex) { btn.innerText = "EQUIPPED"; btn.className = "px-6 py-4 border-2 font-black tracking-widest uppercase transition-all mt-4 w-full max-w-[280px] bg-pink-900/50 border-pink-500 text-pink-300 cursor-default"; } else { btn.innerText = "EQUIP VEHICLE"; btn.className = "px-6 py-4 border-2 font-black tracking-widest uppercase transition-all mt-4 w-full max-w-[280px] bg-pink-600 border-pink-400 text-white hover:bg-pink-500 shadow-[0_0_15px_#ec4899] cursor-pointer"; } } else { if (totalCoins >= data.price) { btn.innerHTML = `BUY <span class="text-yellow-400">(${data.price} C)</span>`; btn.className = "px-6 py-4 border-2 font-black tracking-widest uppercase transition-all mt-4 w-full max-w-[280px] bg-green-600 border-green-400 text-white hover:bg-green-500 shadow-[0_0_15px_#10b981] cursor-pointer"; } else { btn.innerHTML = `LOCKED <span class="text-gray-400">(${data.price} C)</span>`; btn.className = "px-6 py-4 border-2 font-black tracking-widest uppercase transition-all mt-4 w-full max-w-[280px] bg-gray-800 border-gray-600 text-gray-500 cursor-not-allowed"; } } }
   function openGarage() { isGarageOpen = true; currentGarageIndex = equippedBike; clock.getDelta(); ui.mainMenu.style.display = 'none'; const modal = document.getElementById('garageModal'); modal.style.display = 'flex'; setTimeout(() => { modal.classList.remove('hidden', 'opacity-0'); modal.classList.add('opacity-100', 'pointer-events-auto'); }, 10); updateGarageView(); }
-  function closeGarage() { isGarageOpen = false; const modal = document.getElementById('garageModal'); modal.classList.remove('opacity-100', 'pointer-events-auto'); modal.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => { modal.classList.add('hidden'); modal.style.display = 'none'; ui.mainMenu.style.display = 'flex'; renderer.setClearColor(0x050208); renderer.clear(); }, 300); }
+  function closeGarage() { isGarageOpen = false; const modal = document.getElementById('garageModal'); modal.classList.remove('opacity-100', 'pointer-events-auto'); modal.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => { modal.classList.add('hidden'); modal.style.display = 'none'; ui.mainMenu.style.display = 'flex'; }, 300); }
   function changeGarage(dir) { currentGarageIndex = (currentGarageIndex + dir + bikeData.length) % bikeData.length; updateGarageView(); }
   function buyOrEquipBike() { 
     const data = bikeData[currentGarageIndex]; 
@@ -874,7 +828,7 @@
     }
     
     if(fbDb && myProfile) {
-        const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myUid);
+        const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myProfile.nickname);
         fsMod.updateDoc(userRef, { totalCoins, ownedBikes, equippedBike }).catch(()=>{});
     }
   }
@@ -882,7 +836,7 @@
 
   function updateGlossaryView() { glossaryMeshes.forEach((mesh, idx) => { const isCurrent = (idx === currentGlosIndex); mesh.visible = isCurrent; if (isCurrent) { mesh.scale.set(0.1, 0.1, 0.1); mesh.userData.targetScale = 1.0; } }); const data = itemData[currentGlosIndex]; document.getElementById('glosType').innerText = `TYPE: ${data.type}`; const titleEl = document.getElementById('glosTitle'); titleEl.innerText = data.name; titleEl.className = `text-4xl md:text-5xl font-black italic mb-4 drop-shadow-[0_0_10px_currentColor] ${data.color}`; document.getElementById('glosEffect').innerText = data.effect; document.getElementById('glosEffect').parentElement.className = `bg-black/80 border border-current p-2 mb-6 inline-block self-start shadow-[0_0_15px_currentColor] ${data.color}`; document.getElementById('glosDesc').innerText = data.desc; }
   function openGlossary() { isGlossaryOpen = true; clock.getDelta(); ui.mainMenu.style.display = 'none'; const modal = document.getElementById('glossaryModal'); modal.style.display = 'flex'; setTimeout(() => { modal.classList.remove('hidden', 'opacity-0'); modal.classList.add('opacity-100', 'pointer-events-auto'); }, 10); updateGlossaryView(); }
-  function closeGlossary() { isGlossaryOpen = false; const modal = document.getElementById('glossaryModal'); modal.classList.remove('opacity-100', 'pointer-events-auto'); modal.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => { modal.classList.add('hidden'); modal.style.display = 'none'; ui.mainMenu.style.display = 'flex'; renderer.setClearColor(0x050208); renderer.clear(); }, 300); }
+  function closeGlossary() { isGlossaryOpen = false; const modal = document.getElementById('glossaryModal'); modal.classList.remove('opacity-100', 'pointer-events-auto'); modal.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => { modal.classList.add('hidden'); modal.style.display = 'none'; ui.mainMenu.style.display = 'flex'; }, 300); }
   function changeGlossary(dir) { currentGlosIndex = (currentGlosIndex + dir + itemData.length) % itemData.length; updateGlossaryView(); }
 
   function animate() {
@@ -905,21 +859,6 @@
     if (!hasFinished && currentMode === 'TIME_ATTACK') { timer += dt; ui.timerText.innerText = formatTime(timer); }
 
     if (hasFinished) { finishTimer += dt; keys.boost = false; isBoosting = false; baseSpeed = Math.max(0, baseSpeed - 80 * dt); targetSteering = 0; if (finishTimer > 2.5) { gameOver(true); return; } } 
-    else if (isRespawning) {
-        respawnTimer -= dt;
-        ui.respawnCount.innerText = Math.ceil(respawnTimer);
-        currentSpeed = 0; baseSpeed = 0; isBoosting = false; keys.boost = false;
-        playerBike.group.visible = (Math.floor(respawnTimer * 8) % 2 === 0); 
-        
-        if (respawnTimer <= 0) {
-            isRespawning = false;
-            hp = 100; updateHP();
-            nitro = 100; updateNitro();
-            ui.respawnUI.style.display = 'none';
-            playerBike.group.visible = true;
-            baseSpeed = 170; currentSpeed = 170;
-        }
-    }
     else {
       targetSteering = 0; if (keys.left) targetSteering -= 1; if (keys.right) targetSteering += 1;
       if (keys.boost && nitro > 0) { 
@@ -935,15 +874,14 @@
     }
 
     const maxSpeedLimit = baseSpeed * 2.5; const targetSpeed = isBoosting ? maxSpeedLimit : baseSpeed;
-    if (!isRespawning) currentSpeed += (targetSpeed - currentSpeed) * (targetSpeed > currentSpeed ? 2.5 : 1.0) * dt; 
-    totalDistance += currentSpeed * dt;
+    currentSpeed += (targetSpeed - currentSpeed) * (targetSpeed > currentSpeed ? 2.5 : 1.0) * dt; totalDistance += currentSpeed * dt;
 
     if (isSoundOn && engineOsc && engineOsc.state === "started") {
       let targetFreq = 40 + (currentSpeed * 0.1);
-      let targetVol = isRespawning ? -30 : -10;
+      let targetVol = -10;
       let filterFreq = 300 + (currentSpeed * 1.5);
       
-      if (isBoosting && !isRespawning) {
+      if (isBoosting) {
         targetFreq = 80 + (currentSpeed * 0.2); 
         targetVol = -6; 
         filterFreq = 1000 + (currentSpeed * 2);
@@ -953,10 +891,10 @@
       if(engineFilter) engineFilter.frequency.rampTo(filterFreq, 0.1);
     }
 
-    if(isBoosting && !hasFinished && !isRespawning) { ui.nitroIndicator.innerText = "OVERDRIVE"; ui.nitroIndicator.className = "text-pink-400 font-bold uppercase tracking-widest animate-pulse"; ui.nitroBar.className = "bg-pink-500 h-full shadow-[0_0_15px_#ec4899] transition-all duration-100"; } 
+    if(isBoosting && !hasFinished) { ui.nitroIndicator.innerText = "OVERDRIVE"; ui.nitroIndicator.className = "text-pink-400 font-bold uppercase tracking-widest animate-pulse"; ui.nitroBar.className = "bg-pink-500 h-full shadow-[0_0_15px_#ec4899] transition-all duration-100"; } 
     else { ui.nitroIndicator.innerText = "NITRO"; ui.nitroIndicator.className = "text-cyan-400 font-bold uppercase tracking-widest"; ui.nitroBar.className = "bg-cyan-400 h-full shadow-[0_0_10px_#22d3ee] transition-all duration-100"; }
 
-    if (!isJumping && !isRespawning) {
+    if (!isJumping) {
       steeringInput += (targetSteering - steeringInput) * 10 * dt;
       currentLogicX += steeringInput * (60 + (currentSpeed * 0.1)) * dt;
       currentLogicX = Math.max(-45, Math.min(45, currentLogicX)); 
@@ -966,7 +904,7 @@
     
     playerBike.group.position.x = isCenteredCamera ? 0 : currentLogicX; 
     let trackTilt = (getCurveOffset(-100) - getCurveOffset(0)) * 0.005; 
-    let targetBankAngle = (isJumping || isRespawning) ? 0 : (-steeringInput * 0.35); 
+    let targetBankAngle = isJumping ? 0 : (-steeringInput * 0.35); 
     currentBankAngle += (targetBankAngle - currentBankAngle) * 10 * dt;
 
     playerBike.group.rotation.z = currentBankAngle;
@@ -977,9 +915,8 @@
     playerBike.shadowMesh.position.z = 0; playerBike.shadowMesh.position.y = 0.1 + getCurveOffset(0);
     playerBike.shadowMesh.scale.setScalar(Math.max(0.2, 1 - (playerBike.group.position.y / 15))); playerBike.shadowMesh.material.opacity = Math.max(0.2, 1 - (playerBike.group.position.y / 15)) * 0.6;
 
-    if (isJumping && !isRespawning) { velocityY -= gravity * dt; playerBike.group.position.y += velocityY * dt; playerBike.group.rotation.x = -velocityY * 0.015; if (playerBike.group.position.y <= 0) { playerBike.group.position.y = 0; playerBike.group.rotation.x = 0; isJumping = false; velocityY = 0; cameraShake = 0.2; playSfx('crash'); spawnExplosion(currentLogicX, 0, 0, 0x06b6d4, 15); } }
-    
-    if(!isRespawning) updateTrail(playerBike, currentLogicX, playerBike.group.position.y, 0, currentSpeed, dt);
+    if (isJumping) { velocityY -= gravity * dt; playerBike.group.position.y += velocityY * dt; playerBike.group.rotation.x = -velocityY * 0.015; if (playerBike.group.position.y <= 0) { playerBike.group.position.y = 0; playerBike.group.rotation.x = 0; isJumping = false; velocityY = 0; cameraShake = 0.2; playSfx('crash'); spawnExplosion(currentLogicX, 0, 0, 0x06b6d4, 15); } }
+    updateTrail(playerBike, currentLogicX, playerBike.group.position.y, 0, currentSpeed, dt);
 
     const posAttr = floorGeo.attributes.position;
     for(let i=0; i<posAttr.count; i++) { const z = posAttr.getZ(i); posAttr.setX(i, floorOrigX[i] + getCurveOffset(z) - renderShiftX); } posAttr.needsUpdate = true;
@@ -991,7 +928,7 @@
     camera.rotation.z = trackTilt * 1.0; 
     if (cameraShake > 0) { camera.position.x += (Math.random() - 0.5) * cameraShake * 5; camera.position.y += (Math.random() - 0.5) * cameraShake * 5; cameraShake -= dt; }
     camera.lookAt((getCurveOffset(-400) - renderShiftX) * 0.1, 2, -300);
-    camera.fov += ((isBoosting && !isRespawning ? 90 : 70) - camera.fov) * 5 * dt; camera.updateProjectionMatrix(); ui.speedVignette.style.opacity = (isBoosting && !isRespawning) ? '1' : '0';
+    camera.fov += ((isBoosting ? 90 : 70) - camera.fov) * 5 * dt; camera.updateProjectionMatrix(); ui.speedVignette.style.opacity = isBoosting ? '1' : '0';
 
     if (currentMode === 'RACE') {
       let rankCounter = 1;
@@ -1020,7 +957,7 @@
         if(!danger) op.targetX += (Math.sin(op.wanderTimer * op.wanderSpeed) * 10 - op.targetX) * 0.5 * dt;
         if(!op.isJumping) { op.x += (op.targetX - op.x) * 6 * dt; op.bankAngle = (op.x - op.targetX) * 0.05; }
         
-        if (Math.abs(op.zOffset) < 6 && Math.abs(currentLogicX - op.x) < 5 && !hasFinished && !isRespawning) { 
+        if (Math.abs(op.zOffset) < 6 && Math.abs(currentLogicX - op.x) < 5 && !hasFinished) { 
           const bumpForce = 8; const pFaster = currentSpeed > op.speed;
           if (currentLogicX > op.x) { op.x -= bumpForce; currentLogicX += bumpForce * 0.2; } else { op.x += bumpForce; currentLogicX -= bumpForce * 0.2; } 
           if (pFaster) { op.speed *= 0.5; currentSpeed *= 0.95; } else { op.speed *= 0.9; currentSpeed *= 0.8; }
@@ -1045,6 +982,7 @@
       
       Object.keys(multiOpponentsMap).forEach(uid => {
           const op = multiOpponentsMap[uid];
+          // State fetching
           const opState = activeRoom.players[uid]?.state;
           
           if (opState) {
@@ -1066,7 +1004,7 @@
           if(tag) {
               const screenPos = new THREE.Vector3(op.x + getCurveOffset(op.zOffset) - renderShiftX, op.y + 4.5, op.zOffset);
               screenPos.project(camera);
-              if (screenPos.z > 1 && screenPos.z < -1) { tag.style.display = 'none'; }
+              if (screenPos.z > 1) { tag.style.display = 'none'; }
               else {
                   const x = (screenPos.x * .5 + .5) * window.innerWidth; 
                   const y = (screenPos.y * -.5 + .5) * window.innerHeight;
@@ -1106,7 +1044,7 @@
         spawnExplosion(p.mesh.position, p.isAIFired ? 0xff8800 : 0xff0055, 40); 
         createFloatingText('HIT!', p.mesh.position, p.isAIFired ? '#ff8800' : '#ff0055'); 
         
-        if (p.target.isPlayer && !isRespawning) {
+        if (p.target.isPlayer) {
           if (isShieldActive) {
             createFloatingText('DEFLECTED!', p.mesh.position, '#facc15');
             playSfx('jump');
@@ -1115,9 +1053,9 @@
             cameraShake = 0.5; currentSpeed *= 0.6;
             ui.damageFlash.style.opacity = '1'; setTimeout(() => ui.damageFlash.style.opacity = '0', 150);
             playSfx('crash');
-            if (hp <= 0) handleCrash();
+            if (hp <= 0) gameOver(false);
           }
-        } else if (!p.target.isPlayer) {
+        } else {
           p.target.speed *= 0.1; p.target.baseSpeed = 80; p.target.isJumping = true; p.target.velocityY = 50; 
           playSfx('crash');
         }
@@ -1126,7 +1064,7 @@
       else if (p.z < -4000 || p.z > 100) { scene.remove(p.mesh); projectiles.splice(i, 1); }
     }
 
-    if (!hasFinished && !isRespawning) { 
+    if (!hasFinished) { 
       for (let i = 0; i < gameObjects.length; i++) {
         const obj = gameObjects[i]; obj.logicZ += currentSpeed * dt;
         if (obj.type === 'laser' && obj.active) obj.logicX = Math.sin(totalDistance * 0.005 + obj.logicZ * 0.01) * 20;
@@ -1151,9 +1089,7 @@
             if (isJumping && playerBike.group.position.y > (obj.type === 'barricade' ? 6 : 5) - 1) { } 
             else {
               if (isShieldActive || (obj.type === 'obstacle' && isBoosting)) { score += 500; triggerScorePop(isShieldActive ? '#facc15' : '#ef4444'); playSfx('crash'); spawnExplosion(obj.logicX, obj.logicY, obj.logicZ, isShieldActive ? 0xfacc15 : 0xff0000, 40); createFloatingText('SMASH!', obj.logicX, obj.logicY, obj.logicZ, isShieldActive ? '#facc15' : '#ef4444', 'text-4xl drop-shadow-[0_0_15px_currentColor]'); if (!isShieldActive) { currentSpeed *= 0.4; cameraShake = 0.4; } obj.active = false; obj.mesh.visible = false; continue; }
-              hp -= (obj.type === 'barricade' ? 35 : 20); updateHP(); playSfx('crash'); spawnExplosion(obj.logicX, obj.logicY, obj.logicZ, 0xff0000, 30); cameraShake = 0.5; currentSpeed *= 0.5; ui.damageFlash.style.opacity = '1'; setTimeout(() => ui.damageFlash.style.opacity = '0', 150); 
-              if (hp <= 0) handleCrash(); 
-              obj.active = false; if(obj.mesh.material) { obj.mesh.material.transparent = true; obj.mesh.material.opacity = 0; }
+              hp -= (obj.type === 'barricade' ? 35 : 20); updateHP(); playSfx('crash'); spawnExplosion(obj.logicX, obj.logicY, obj.logicZ, 0xff0000, 30); cameraShake = 0.5; currentSpeed *= 0.5; ui.damageFlash.style.opacity = '1'; setTimeout(() => ui.damageFlash.style.opacity = '0', 150); if (hp <= 0) gameOver(false); obj.active = false; if(obj.mesh.material) { obj.mesh.material.transparent = true; obj.mesh.material.opacity = 0; }
             }
           } else if (obj.type === 'coin') { const pts = isBoosting ? 1000 : 500; score += pts; triggerScorePop('#fde047'); currentRunCoins += 1; totalCoins += 1; updateCoinsUI(); playSfx('coin'); spawnExplosion(obj.logicX, obj.logicY, obj.logicZ, 0xfde047, 10); createFloatingText(`+${pts} (1C)`, obj.logicX, obj.logicY, obj.logicZ, '#fde047'); obj.active = false; obj.mesh.visible = false; } 
           else if (obj.type === 'mega_coin') { const pts = isBoosting ? 4000 : 2000; score += pts; triggerScorePop('#d946ef'); nitro = Math.min(100, nitro + 15); updateNitro(); currentRunCoins += 5; totalCoins += 5; updateCoinsUI(); playSfx('mega_coin'); spawnExplosion(obj.logicX, obj.logicY, obj.logicZ, 0xd946ef, 30); createFloatingText(`MEGA +${pts} (5C)`, obj.logicX, obj.logicY, obj.logicZ, '#d946ef', 'text-4xl text-fuchsia-400 drop-shadow-[0_0_15px_#d946ef]'); obj.active = false; obj.mesh.visible = false; } 
@@ -1189,19 +1125,6 @@
     if (!hasFinished) score += (currentSpeed * dt * 0.05); ui.score.innerText = Math.floor(score); renderer.render(scene, camera);
   }
 
-  function handleCrash() {
-      if (currentMode === 'MULTI_RACE') {
-          isRespawning = true;
-          respawnTimer = 5.0;
-          playSfx('crash');
-          spawnExplosion(currentLogicX, playerBike.group.position.y, 0, 0xff0000, 40);
-          ui.damageFlash.style.opacity = '1'; setTimeout(() => ui.damageFlash.style.opacity = '0', 150);
-          ui.respawnUI.style.display = 'flex';
-      } else {
-          gameOver(false);
-      }
-  }
-
   function updateTrail(bikeObj, logicX, y, currentZOffset, speed, dt) {
     bikeObj.trailHistory.unshift({ x: logicX, y: y, z: currentZOffset }); if(bikeObj.trailHistory.length > bikeObj.trailCount) bikeObj.trailHistory.pop();
     let rShift = isCenteredCamera ? currentLogicX : 0;
@@ -1224,7 +1147,7 @@
       bonusCoins = Math.floor(score / 5000) * 10; 
       if (bonusCoins > 0) bonusMsg = `MILESTONE BONUS: +${bonusCoins} C (Score)`;
 
-      if (score > highScore) { highScore = score; localStorage.setItem('neonRiderHighScore', highScore); ui.highScoreText.innerText = Math.floor(highScore); } 
+      if (score > highScore) { highScore = score; ui.highScoreText.innerText = Math.floor(highScore); } 
       ui.finalScore.innerText = Math.floor(score); ui.goRankLine.style.display = 'none'; 
       ui.goTitle.innerText = "SYSTEM FAILURE"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
       saveHistory('SOLO', `Score: ${Math.floor(score)}`); 
@@ -1235,10 +1158,8 @@
       ui.finalRank.innerText = rankString; ui.finalRank.style.color = finalRankSaved === 1 ? '#facc15' : (finalRankSaved === 2 ? '#94a3b8' : '#b45309'); 
       if (isFinish) { 
         ui.goTitle.innerText = "RACE FINISHED!"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-yellow-400 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(250,204,21,1)] text-center"; 
-        let updated = false; 
-        if (finalRankSaved < gpBestRank) { gpBestRank = finalRankSaved; updated = true; } 
-        if (score > gpHighScore) { gpHighScore = score; updated = true; } 
-        if (updated) { localStorage.setItem('neonRiderGPBestRank', gpBestRank); localStorage.setItem('neonRiderGPHighScore', gpHighScore); } 
+        if (finalRankSaved < gpBestRank) { gpBestRank = finalRankSaved; } 
+        if (score > gpHighScore) { gpHighScore = score; } 
         saveHistory('RACE', `Rank: ${rankString} / Score: ${Math.floor(score)}`); 
       } else { 
         ui.goTitle.innerText = "CRASHED"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
@@ -1256,7 +1177,7 @@
 
         ui.finalTimeLine.style.display = 'block'; ui.finalTime.innerText = formatTime(timer); 
         ui.goTitle.innerText = "TIME RECORDED!"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-yellow-400 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(250,204,21,1)] text-center"; 
-        if (bestTime === 0 || timer < bestTime) { bestTime = timer; localStorage.setItem('neonRiderBestTime', bestTime); } 
+        if (bestTime === 0 || timer < bestTime) { bestTime = timer; } 
         saveHistory('TIME_ATTACK', `Time: ${formatTime(timer)}`); 
       } else { 
         ui.goTitle.innerText = "CRASHED"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
@@ -1264,17 +1185,16 @@
       } 
     } else if (currentMode === 'MULTI_RACE') {
       ui.finalScore.innerText = Math.floor(score); ui.goRankLine.style.display = 'block'; 
-      let totalP = Object.keys(multiOpponentsMap).length + 1;
-      let rankString = finalRankSaved + " / " + totalP; 
+      let rankString = finalRankSaved === 1 ? "1st" : (finalRankSaved === 2 ? "2nd" : (finalRankSaved === 3 ? "3rd" : "4th")); 
       ui.finalRank.innerText = rankString; ui.finalRank.style.color = finalRankSaved === 1 ? '#facc15' : '#94a3b8'; 
       if (isFinish) { 
-        ui.goTitle.innerText = finalRankSaved === 1 ? "VICTORY!" : "FINISHED!"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-purple-400 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(168,85,247,1)] text-center"; 
+        ui.goTitle.innerText = finalRankSaved === 1 ? "VICTORY!" : (finalRankSaved === 2 ? "2ND PLACE" : "FINISHED!"); ui.goTitle.className = "text-5xl md:text-7xl font-black text-purple-400 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(168,85,247,1)] text-center"; 
         bonusCoins = finalRankSaved === 1 ? 50 : 10;
         bonusMsg = finalRankSaved === 1 ? "VICTORY BONUS: +50 C" : "PARTICIPATION: +10 C";
         saveHistory('MULTI', `Rank: ${rankString} / Score: ${Math.floor(score)}`); 
       } else { 
-        ui.goTitle.innerText = "DNF"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
-        saveHistory('MULTI', `DNF / Score: ${Math.floor(score)}`); 
+        ui.goTitle.innerText = "CRASHED"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
+        saveHistory('MULTI', `CRASHED / Score: ${Math.floor(score)}`); 
       } 
     }
 
@@ -1293,8 +1213,15 @@
     
     myGlobalScore += Math.floor(score);
     if(fbDb && myProfile) {
-        const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myUid);
-        fsMod.updateDoc(userRef, { globalScore: myGlobalScore, totalCoins: totalCoins }).catch(()=>{});
+        const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myProfile.nickname);
+        fsMod.updateDoc(userRef, { 
+            globalScore: myGlobalScore,
+            totalCoins: totalCoins,
+            highScore: highScore,
+            gpHighScore: gpHighScore,
+            gpBestRank: gpBestRank,
+            bestTime: bestTime
+        }).catch(()=>{});
     }
     updatePresence();
   }
@@ -1308,25 +1235,44 @@
             import('https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js')
         ]);
         fsMod = fs;
+        
         let config;
-        if (typeof __firebase_config !== 'undefined' && __firebase_config) { config = JSON.parse(__firebase_config); } 
-        else {
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+            config = JSON.parse(__firebase_config);
+        } else {
             config = {
-                apiKey: "AIzaSyDv_3fBGVykf479utHX982QX4r4L90p5-g", authDomain: "neon-driver.firebaseapp.com",
-                projectId: "neon-driver", storageBucket: "neon-driver.firebasestorage.app",
-                messagingSenderId: "568563508804", appId: "1:568563508804:web:0534f4dd699793793d3e11"
+                apiKey: "AIzaSyDv_3fBGVykf479utHX982QX4r4L90p5-g",
+                authDomain: "neon-driver.firebaseapp.com",
+                projectId: "neon-driver",
+                storageBucket: "neon-driver.firebasestorage.app",
+                messagingSenderId: "568563508804",
+                appId: "1:568563508804:web:0534f4dd699793793d3e11"
             };
         }
-        if (!config) { document.getElementById('loginError').innerText = "Firebase 설정이 로드되지 않았습니다."; return; }
+
+        if (!config) {
+          document.getElementById('loginError').innerText = "Firebase 설정이 로드되지 않았습니다.";
+          return;
+        }
         const app = appMod.initializeApp(config);
         fbAuth = authMod.getAuth(app);
         fbDb = fsMod.getFirestore(app);
         
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { await authMod.signInWithCustomToken(fbAuth, __initial_auth_token); } 
-        else { await authMod.signInAnonymously(fbAuth); }
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await authMod.signInWithCustomToken(fbAuth, __initial_auth_token);
+        } else {
+            await authMod.signInAnonymously(fbAuth);
+        }
         
-        authMod.onAuthStateChanged(fbAuth, (user) => { if (user) myUid = user.uid; });
-    } catch (e) { console.error("Firebase init error", e); document.getElementById('loginError').innerText = "서버 모듈 연결 실패."; }
+        authMod.onAuthStateChanged(fbAuth, (user) => {
+            if (user) {
+                myUid = user.uid;
+            }
+        });
+    } catch (e) { 
+      console.error("Firebase init error", e); 
+      document.getElementById('loginError').innerText = "서버 모듈 연결 실패.";
+    }
   }
 
   function switchLoginTab(type) {
@@ -1336,19 +1282,25 @@
     const titleText = document.getElementById('loginTitleText');
     const submitBtn = document.getElementById('authSubmitBtn');
     document.getElementById('loginError').innerText = '';
+
     if (type === 'login') {
       tabLogin.className = "flex-1 pb-3 text-lg font-black tracking-widest text-purple-400 border-b-2 border-purple-500 transition-all";
       tabSignup.className = "flex-1 pb-3 text-lg font-black tracking-widest text-gray-500 transition-all border-none";
-      titleText.innerText = "USER ACCESS LOGIN"; submitBtn.innerText = "ACCESS NET";
+      titleText.innerText = "USER ACCESS LOGIN";
+      submitBtn.innerText = "ACCESS NET";
     } else {
       tabSignup.className = "flex-1 pb-3 text-lg font-black tracking-widest text-purple-400 border-b-2 border-purple-500 transition-all";
       tabLogin.className = "flex-1 pb-3 text-lg font-black tracking-widest text-gray-500 transition-all border-none";
-      titleText.innerText = "CREATE UNIQUE CODENAME"; submitBtn.innerText = "REGISTER";
+      titleText.innerText = "CREATE UNIQUE CODENAME";
+      submitBtn.innerText = "REGISTER";
     }
   }
 
   async function performAuthAction() {
-    if (!fbDb || !myUid) { document.getElementById('loginError').innerText = "서버 연결 중입니다. 잠시 후 다시 시도해주세요."; return; }
+    if (!fbDb || !myUid) {
+      document.getElementById('loginError').innerText = "서버 연결 중입니다. 잠시 후 다시 시도해주세요.";
+      return;
+    }
     const nick = document.getElementById('loginNickname').value.trim().toUpperCase();
     const pass = document.getElementById('loginPassword').value.trim();
     const err = document.getElementById('loginError');
@@ -1367,129 +1319,42 @@
         const data = docSnap.data();
         if (data.password !== pass) { err.innerText = "비밀번호가 일치하지 않습니다."; return; }
         myProfile = data;
-        myGlobalScore = data.globalScore || myGlobalScore;
+        myGlobalScore = data.globalScore || 0;
+        totalCoins = data.totalCoins || 0;
+        ownedBikes = data.ownedBikes || [0];
+        equippedBike = data.equippedBike || 0;
+        highScore = data.highScore || 0;
+        gpHighScore = data.gpHighScore || 0;
+        gpBestRank = data.gpBestRank || 4;
+        bestTime = data.bestTime || 0;
       } else {
         if (docSnap.exists()) { err.innerText = "이미 사용 중인 닉네임입니다. 다른 닉네임을 사용하세요."; return; }
-      }
-      
-      const myRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myUid);
-      const mySnap = await fsMod.getDoc(myRef);
-      if(!mySnap.exists()) {
-          myProfile = { nickname: nick, password: pass, globalScore: myGlobalScore, lastSeen: Date.now(), isOnline: true, uid: myUid, friends: {}, friendReqs: {}, roomInvites: {} };
-          await fsMod.setDoc(myRef, myProfile);
-          await fsMod.setDoc(userDocRef, { uid: myUid });
-      } else {
-          myProfile = mySnap.data();
+        myGlobalScore = 0; totalCoins = 0; ownedBikes = [0]; equippedBike = 0; highScore = 0; gpHighScore = 0; gpBestRank = 4; bestTime = 0;
+        myProfile = { nickname: nick, password: pass, globalScore: 0, totalCoins: 0, ownedBikes: [0], equippedBike: 0, highScore: 0, gpHighScore: 0, gpBestRank: 4, bestTime: 0, lastSeen: Date.now(), isOnline: true, uid: myUid };
+        await fsMod.setDoc(userDocRef, myProfile);
       }
 
-      await fsMod.updateDoc(myRef, { lastSeen: Date.now(), isOnline: true });
-      
-      fsMod.onSnapshot(myRef, (doc) => {
-          if(doc.exists()) {
-              myProfile = doc.data();
-              renderAlerts();
-          }
-      });
-
+      await fsMod.updateDoc(userDocRef, { lastSeen: Date.now(), isOnline: true, uid: myUid });
       document.getElementById('loginScreen').style.display = 'none';
       ui.mainMenu.style.display = 'flex';
-      updateCoinsUI();
+      
+      replacePlayerBike(bikeData[equippedBike]);
+      updateMenuRecords();
     } catch(e) {
-      console.error(e); err.innerText = "작업 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.";
+      console.error(e);
+      err.innerText = "작업 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.";
     }
   }
-
-  function renderAlerts() {
-      const alerts = document.getElementById('challengeAlerts');
-      let html = '';
-      
-      if (myProfile && myProfile.friendReqs) {
-          Object.keys(myProfile.friendReqs).forEach(uid => {
-              const name = myProfile.friendReqs[uid];
-              if(name !== null) {
-                  html += `
-                  <div class="bg-blue-900/80 border-2 border-blue-400 p-3 flex justify-between items-center shadow-[0_0_10px_#3b82f6]">
-                      <span class="text-white font-bold">👤 ${name} 님의 친구 요청</span>
-                      <div class="flex gap-2">
-                          <button onclick="acceptFriend('${uid}', '${name}')" class="bg-green-500 px-3 py-1 text-black font-bold text-xs hover:bg-green-400">수락</button>
-                          <button onclick="rejectFriend('${uid}')" class="bg-red-500 px-3 py-1 text-white font-bold text-xs hover:bg-red-400">거절</button>
-                      </div>
-                  </div>`;
-              }
-          });
-      }
-      
-      if (myProfile && myProfile.roomInvites) {
-          const now = Date.now();
-          Object.keys(myProfile.roomInvites).forEach(roomId => {
-              const inv = myProfile.roomInvites[roomId];
-              if(inv !== null && (now - inv.timestamp < 30000)) { 
-                  html += `
-                  <div class="bg-fuchsia-900/80 border-2 border-fuchsia-400 p-3 flex justify-between items-center shadow-[0_0_15px_#d946ef] animate-pulse">
-                      <span class="text-white font-bold">⚔️ ${inv.hostName} 님의 방 초대!</span>
-                      <div class="flex gap-2">
-                          <button onclick="acceptInvite('${roomId}')" class="bg-green-500 px-3 py-1 text-black font-bold text-xs hover:bg-green-400">입장</button>
-                      </div>
-                  </div>`;
-              }
-          });
-      }
-      alerts.innerHTML = html;
-      
-      if (activeRoom && activeRoom.host === myUid && document.getElementById('roomModal').style.display !== 'none') {
-          renderRoomPlayers();
-      }
-  }
-
-  window.addFriend = async function(targetUid, targetName) {
-      if(!fbDb) return;
-      try {
-          const ref = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', targetUid);
-          await fsMod.updateDoc(ref, { [`friendReqs.${myUid}`]: myProfile.nickname });
-          alert(targetName + " 님에게 친구 요청을 보냈습니다.");
-      } catch(e) { console.error(e); }
-  }
   
-  window.acceptFriend = async function(uid, name) {
-      if(!fbDb) return;
-      try {
-          const myRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myUid);
-          const targetRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', uid);
-          await fsMod.updateDoc(myRef, { [`friends.${uid}`]: name, [`friendReqs.${uid}`]: null });
-          await fsMod.updateDoc(targetRef, { [`friends.${myUid}`]: myProfile.nickname });
-      } catch(e) { console.error(e); }
-  }
+  window.openSoloMenu = function() {
+      ui.mainMenu.style.display = 'none';
+      document.getElementById('soloMenu').style.display = 'flex';
+  };
   
-  window.rejectFriend = async function(uid) {
-      if(!fbDb) return;
-      try {
-          const myRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myUid);
-          await fsMod.updateDoc(myRef, { [`friendReqs.${uid}`]: null });
-      } catch(e) { console.error(e); }
-  }
-
-  window.inviteFriend = async function(targetUid) {
-      if(!fbDb || !currentRoomId) return;
-      try {
-          const targetRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', targetUid);
-          await fsMod.updateDoc(targetRef, { [`roomInvites.${currentRoomId}`]: { hostName: myProfile.nickname, timestamp: Date.now() } });
-          alert("친구를 방으로 초대했습니다.");
-      } catch(e) { console.error(e); }
-  }
-
-  window.acceptInvite = async function(roomId) {
-      if(!fbDb) return;
-      try {
-          const myRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myUid);
-          await fsMod.updateDoc(myRef, { [`roomInvites.${roomId}`]: null });
-          
-          currentRoomId = roomId;
-          const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', roomId);
-          await fsMod.updateDoc(roomRef, { [`players.${myUid}`]: { name: myProfile.nickname, state: null } });
-          
-          openCurrentRoom();
-      } catch(e) { console.error(e); alert("방에 입장할 수 없습니다."); }
-  }
+  window.closeSoloMenu = function() {
+      document.getElementById('soloMenu').style.display = 'none';
+      ui.mainMenu.style.display = 'flex';
+  };
 
   window.openLobby = function() {
       if (!myProfile) return;
@@ -1502,7 +1367,6 @@
       setTimeout(() => { modal.classList.remove('hidden', 'opacity-0'); modal.classList.add('opacity-100', 'pointer-events-auto'); }, 10);
       updatePresence();
       refreshLobbyData();
-      if(window.lobbyInterval) clearInterval(window.lobbyInterval);
       window.lobbyInterval = setInterval(refreshLobbyData, 5000);
   };
 
@@ -1516,11 +1380,16 @@
   
   function updatePresence() {
       if(myProfile && fbDb) {
-          const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myUid);
-          fsMod.updateDoc(userRef, { lastSeen: Date.now(), isOnline: true, globalScore: myGlobalScore }).catch(()=>{});
+          const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myProfile.nickname);
+          fsMod.updateDoc(userRef, { lastSeen: Date.now(), isOnline: true, globalScore: myGlobalScore }).catch((e)=>{
+              if(e.code === 'not-found') {
+                  fsMod.setDoc(userRef, myProfile).catch(()=>{});
+              }
+          });
       }
   }
 
+  // 로비의 데이터 (방 목록, 랭킹) 업데이트
   async function refreshLobbyData() {
       if(!fbDb) return;
       updatePresence();
@@ -1530,129 +1399,105 @@
       allUsers = [];
       snap.forEach(d => {
           const u = d.data();
-          if (u.uid && u.uid !== myUid) allUsers.push(u);
+          if (u.nickname !== myProfile.nickname) allUsers.push(u);
       });
       
-      const onlineList = document.getElementById('onlinePlayersList');
-      const now = Date.now();
-      const onlineUsers = allUsers.filter(u => u.isOnline && (now - u.lastSeen < 20000));
-      const friends = myProfile.friends || {};
-      
-      onlineList.innerHTML = onlineUsers.length > 0 ? onlineUsers.map(u => {
-          const isFriend = !!friends[u.uid];
-          let btn = '';
-          if (!isFriend) {
-              btn = `<button onclick="addFriend('${u.uid}', '${u.nickname}')" class="bg-blue-600 px-3 py-1 text-[10px] font-bold text-white hover:bg-blue-400 transition-colors">ADD FRIEND</button>`;
-          } else {
-              btn = `<span class="text-[10px] text-green-400 font-bold bg-green-900/30 px-2 py-1">FRIEND</span>`;
-          }
-          return `
-          <div class="flex justify-between items-center bg-gray-900/50 p-2 border border-blue-500/30">
-              <span class="text-white font-bold">${u.nickname}</span>
-              ${btn}
-          </div>`;
-      }).join('') : '<div class="text-gray-500 text-xs p-2">현재 온라인인 유저가 없습니다.</div>';
-      
-      const lbList = document.getElementById('leaderboardList');
       const sortedAll = [...allUsers, {uid: myUid, nickname: myProfile.nickname, globalScore: myGlobalScore}].sort((a,b) => (b.globalScore||0) - (a.globalScore||0));
+      const lbList = document.getElementById('leaderboardList');
       lbList.innerHTML = sortedAll.map((u, i) => {
-          let color = i===0 ? 'text-yellow-400' : (i===1 ? 'text-gray-300' : (i===2 ? 'text-orange-400' : 'text-gray-400'));
-          let bg = u.uid === myUid ? 'bg-yellow-900/50 border-yellow-500/50' : 'bg-transparent border-gray-700/50';
-          return `<div class="flex justify-between items-center p-2 border-b ${bg}">
+          let color = i===0 ? 'text-yellow-400' : (i===1 ? 'text-gray-300' : (i===2 ? 'text-orange-400' : 'text-white'));
+          let bg = u.nickname === myProfile.nickname ? 'bg-yellow-900/50 border-yellow-500' : 'bg-black/50 border-gray-700';
+          return `<div class="flex justify-between items-center p-2 border ${bg}">
               <span class="font-bold ${color}">${i+1}. ${u.nickname}</span>
-              <span class="text-yellow-400 font-mono">${u.globalScore||0}</span>
+              <span class="text-yellow-400 font-mono">${u.globalScore||0} PTS</span>
           </div>`;
       }).join('');
 
+      // 방 목록 업데이트
       const roomsRef = fsMod.collection(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms');
       const rSnap = await fsMod.getDocs(roomsRef);
       const roomContainer = document.getElementById('roomListContainer');
       const validRooms = [];
       rSnap.forEach(d => {
-          const r = d.data(); r.id = d.id;
+          const r = d.data();
+          r.id = d.id;
           if (r.status === 'waiting' && Date.now() - r.createdAt < 3600000) validRooms.push(r);
       });
 
-      roomContainer.innerHTML = validRooms.length > 0 ? validRooms.map(r => {
+      if (validRooms.length > 0) {
+          roomContainer.innerHTML = validRooms.map(r => {
              const pCount = Object.keys(r.players || {}).length;
              const isFull = pCount >= 4;
              return `<div class="flex justify-between items-center bg-purple-900/40 p-3 border border-purple-500/50">
                <div>
-                 <span class="text-white font-bold block">${r.hostName}'s Room</span>
-                 <span class="text-gray-400 text-[10px]">Players: ${pCount} / 4</span>
+                 <span class="text-white font-bold text-lg block">${r.hostName}'s Room</span>
+                 <span class="text-gray-400 text-xs">Players: ${pCount} / 4</span>
                </div>
-               ${isFull ? `<span class="text-red-500 font-bold px-3 text-xs">FULL</span>` : `<button onclick="joinRoom('${r.id}')" class="bg-green-600 px-4 py-2 font-bold text-white text-xs hover:bg-green-500 transition-colors shadow-[0_0_10px_#16a34a]">JOIN</button>`}
+               ${isFull ? `<span class="text-red-500 font-bold px-3">FULL</span>` : `<button onclick="joinRoom('${r.id}')" class="bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-500 transition-colors shadow-[0_0_10px_#16a34a]">JOIN</button>`}
              </div>`;
-      }).join('') : '<div class="text-gray-400 text-xs p-2 text-center">활성화된 대기방이 없습니다. 직접 방을 만들어보세요!</div>';
+          }).join('');
+      } else {
+          roomContainer.innerHTML = '<div class="text-gray-400 text-sm p-2 text-center">활성화된 대기방이 없습니다. 직접 방을 만들어보세요!</div>';
+      }
   }
 
+  // 방 생성
   window.createRoom = async function() {
       if(!fbDb) return;
       const roomRef = fsMod.doc(fsMod.collection(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms'));
       currentRoomId = roomRef.id;
+      
       const newRoom = {
           host: myUid, hostName: myProfile.nickname, status: 'waiting', createdAt: Date.now(),
-          players: { [myUid]: { name: myProfile.nickname, state: null } },
-          joinRequests: {}
+          players: {
+              [myUid]: { name: myProfile.nickname, state: null }
+          }
       };
       await fsMod.setDoc(roomRef, newRoom);
       openCurrentRoom();
   };
 
+  // 방 참가
   window.joinRoom = async function(roomId) {
       if(!fbDb) return;
       currentRoomId = roomId;
       const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', roomId);
       try {
-          const d = await fsMod.getDoc(roomRef);
-          if(!d.exists()) { alert("방이 존재하지 않습니다."); return; }
-          const rData = d.data();
-          if(rData.status !== 'waiting') { alert("이미 게임이 시작된 방입니다."); return; }
-          
-          await fsMod.updateDoc(roomRef, { [`joinRequests.${myUid}`]: { name: myProfile.nickname } });
-          
-          document.getElementById('lobbyModal').style.display = 'none';
-          document.getElementById('waitingJoinModal').style.display = 'flex';
-          
-          if(activeRoomUnsub) activeRoomUnsub();
-          activeRoomUnsub = fsMod.onSnapshot(roomRef, (doc) => {
-              if (!doc.exists()) { alert("방이 사라졌습니다."); window.cancelJoin(); return; }
-              const r = doc.data();
-              if (r.players && r.players[myUid]) {
-                  document.getElementById('waitingJoinModal').style.display = 'none';
-                  document.getElementById('roomModal').style.display = 'flex';
-                  activeRoom = r;
-                  renderRoomPlayers();
-                  if (r.status === 'playing' && !isMultiplayer) startMultiplayerRace();
-              } else if (r.joinRequests && r.joinRequests[myUid]) {
-              } else {
-                  alert("방 입장이 거절되었습니다.");
-                  window.cancelJoin();
-              }
+          await fsMod.updateDoc(roomRef, {
+             [`players.${myUid}`]: { name: myProfile.nickname, state: null }
           });
-      } catch(e) { console.error(e); alert("입장 요청 중 오류가 발생했습니다."); }
+          openCurrentRoom();
+      } catch(e) {
+          alert("방에 참가할 수 없습니다. 이미 사라진 방일 수 있습니다.");
+          currentRoomId = null;
+          refreshLobbyData();
+      }
   };
 
-  window.cancelJoin = function() {
-      if(activeRoomUnsub) { activeRoomUnsub(); activeRoomUnsub = null; }
-      if(fbDb && currentRoomId) {
-          const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', currentRoomId);
-          fsMod.updateDoc(roomRef, { [`joinRequests.${myUid}`]: null }).catch(()=>{});
-      }
-      currentRoomId = null;
-      document.getElementById('waitingJoinModal').style.display = 'none';
-      document.getElementById('lobbyModal').style.display = 'flex';
-  }
-
+  // 방 퇴장
   window.leaveRoom = async function() {
       if(!fbDb || !currentRoomId) return;
       if (activeRoomUnsub) { activeRoomUnsub(); activeRoomUnsub = null; }
+      
       const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', currentRoomId);
       try {
-          if (activeRoom && activeRoom.host === myUid) { await fsMod.deleteDoc(roomRef); } 
-          else { await fsMod.updateDoc(roomRef, { [`players.${myUid}`]: null }); }
-      } catch (e) { console.warn("방 퇴장 오류:", e); }
-      currentRoomId = null; activeRoom = null;
+          if (activeRoom && activeRoom.host === myUid) {
+              // 방장이 나가면 폭파
+              await fsMod.deleteDoc(roomRef);
+          } else {
+              // 플레이어가 나가면 목록에서 삭제
+              const docSnap = await fsMod.getDoc(roomRef);
+              if (docSnap.exists()) {
+                  const players = docSnap.data().players;
+                  delete players[myUid];
+                  await fsMod.updateDoc(roomRef, { players });
+              }
+          }
+      } catch (e) {
+          console.warn("방 퇴장 중 오류:", e);
+      }
+      currentRoomId = null;
+      activeRoom = null;
       document.getElementById('roomModal').style.display = 'none';
       document.getElementById('lobbyModal').style.display = 'flex';
   };
@@ -1660,13 +1505,33 @@
   function openCurrentRoom() {
       document.getElementById('lobbyModal').style.display = 'none';
       document.getElementById('roomModal').style.display = 'flex';
+      listenToCurrentRoom();
+  }
+
+  function listenToCurrentRoom() {
+      if (!fbDb || !currentRoomId) return;
       if (activeRoomUnsub) activeRoomUnsub();
+      
       const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', currentRoomId);
       activeRoomUnsub = fsMod.onSnapshot(roomRef, (doc) => {
-          if (!doc.exists()) { alert("방이 닫혔습니다."); leaveRoom(); return; }
+          if (!doc.exists()) {
+             // 방이 폭파됨
+             alert("방이 사라졌습니다.");
+             leaveRoom();
+             return;
+          }
           activeRoom = doc.data();
           renderRoomPlayers();
-          if (activeRoom.status === 'playing' && !isMultiplayer) startMultiplayerRace();
+          
+          if (activeRoom.host === myUid) {
+              document.getElementById('btnStartRoom').style.display = 'block';
+          } else {
+              document.getElementById('btnStartRoom').style.display = 'none';
+          }
+          
+          if (activeRoom.status === 'playing' && !isMultiplayer) {
+              startMultiplayerRace();
+          }
       }, (err) => {});
   }
 
@@ -1677,68 +1542,22 @@
       container.innerHTML = pKeys.map(uid => {
           const p = activeRoom.players[uid];
           const isHost = activeRoom.host === uid;
-          return `<div class="bg-purple-900/60 border-2 border-purple-400 p-4 w-40 text-center shadow-[0_0_15px_#a855f7]">
+          return `<div class="bg-purple-900/60 border-2 border-purple-400 p-4 w-48 text-center shadow-[0_0_15px_#a855f7]">
              <div class="text-3xl mb-2">${isHost ? '👑' : '👤'}</div>
-             <div class="text-white font-bold truncate text-sm">${p.name}</div>
+             <div class="text-white font-bold truncate">${p.name}</div>
           </div>`;
       }).join('');
-
-      const isHost = activeRoom.host === myUid;
-      const joinReqDiv = document.getElementById('roomJoinReqs');
-      const invitePanel = document.getElementById('roomInvitePanel');
-      const startBtn = document.getElementById('btnStartRoom');
-      
-      if (isHost) {
-          startBtn.style.display = 'block'; joinReqDiv.style.display = 'block'; invitePanel.style.display = 'flex';
-          
-          const reqList = document.getElementById('joinReqList');
-          if (activeRoom.joinRequests) {
-              const reqKeys = Object.keys(activeRoom.joinRequests).filter(k => activeRoom.joinRequests[k] !== null);
-              if (reqKeys.length > 0) {
-                  reqList.innerHTML = reqKeys.map(uid => {
-                      const p = activeRoom.joinRequests[uid];
-                      return `<div class="bg-gray-800 p-2 flex justify-between items-center text-sm">
-                          <span class="text-white font-bold">${p.name}</span>
-                          <div class="flex gap-2">
-                             <button onclick="acceptJoin('${uid}', '${p.name}')" class="bg-green-500 text-black px-2 py-1 text-[10px] font-bold">수락</button>
-                             <button onclick="rejectJoin('${uid}')" class="bg-red-500 text-white px-2 py-1 text-[10px] font-bold">거절</button>
-                          </div>
-                      </div>`;
-                  }).join('');
-              } else { reqList.innerHTML = '<span class="text-gray-500 text-xs">요청 없음</span>'; }
-          } else { reqList.innerHTML = '<span class="text-gray-500 text-xs">요청 없음</span>'; }
-          
-          const fList = document.getElementById('roomFriendList');
-          const friends = myProfile.friends || {};
-          const now = Date.now();
-          const onlineFriends = allUsers.filter(u => u.isOnline && (now - u.lastSeen < 20000) && friends[u.uid] && !activeRoom.players[u.uid]);
-          fList.innerHTML = onlineFriends.length > 0 ? onlineFriends.map(u => 
-              `<div class="bg-gray-800 p-2 flex justify-between items-center">
-                  <span class="text-white text-xs font-bold">${u.nickname}</span>
-                  <button onclick="inviteFriend('${u.uid}')" class="bg-pink-600 text-white px-2 py-1 text-[10px] font-bold hover:bg-pink-500">초대</button>
-              </div>`
-          ).join('') : '<span class="text-gray-500 text-xs">초대 가능한 친구가 없습니다.</span>';
-      } else {
-          startBtn.style.display = 'none'; joinReqDiv.style.display = 'none'; invitePanel.style.display = 'none';
-      }
   }
 
-  window.acceptJoin = async function(uid, name) {
-      if(!fbDb || !currentRoomId) return;
-      const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', currentRoomId);
-      await fsMod.updateDoc(roomRef, { [`players.${uid}`]: { name: name, state: null }, [`joinRequests.${uid}`]: null });
-  }
-
-  window.rejectJoin = async function(uid) {
-      if(!fbDb || !currentRoomId) return;
-      const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', currentRoomId);
-      await fsMod.updateDoc(roomRef, { [`joinRequests.${uid}`]: null });
-  }
-
+  // 방장이 게임 시작
   window.startRoomGame = async function() {
       if(!fbDb || !currentRoomId) return;
       const roomRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', currentRoomId);
-      try { await fsMod.updateDoc(roomRef, { status: 'playing' }); } catch (e) { console.warn("게임 시작 오류:", e); }
+      try {
+          await fsMod.updateDoc(roomRef, { status: 'playing' });
+      } catch (e) {
+          console.warn("게임 시작 오류:", e);
+      }
   };
 
   function startMultiplayerRace() {
@@ -1755,12 +1574,17 @@
           fsMod.updateDoc(fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'rooms', currentRoomId), {
               [`players.${myUid}.state`]: myState
           }).catch((e)=>{
-              if(e.code === 'not-found') { isMultiplayer = false; currentRoomId = null; }
+              if(e.code === 'not-found') {
+                  isMultiplayer = false;
+                  currentRoomId = null;
+              }
           });
       }
   }
 
   initFirebase();
+  // ----------------------------------------
+
   updateMenuRecords(); renderHistory(); updateSettingsUI(); animate();
 </script>
 </body>
