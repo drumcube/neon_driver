@@ -101,7 +101,7 @@
 </div>
 
 <!-- MULTIPLAYER LOBBY -->
-<div id="lobbyModal" class="absolute inset-0 bg-black/95 z-[55] flex flex-col items-center justify-start py-10 px-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden backdrop-blurmd">
+<div id="lobbyModal" class="absolute inset-0 bg-black/95 z-[55] flex flex-col items-center justify-start py-10 px-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden backdrop-blur-md">
   <div class="absolute top-6 left-6 text-purple-400 font-black text-xl flex items-center gap-2">
     👤 <span id="lobbyMyName">PLAYER</span> <span class="text-sm text-gray-400 block ml-2">TOTAL SCORE: <span id="lobbyMyScore" class="text-white font-mono">0</span></span>
   </div>
@@ -289,12 +289,12 @@
   let multiOpponentsMap = {}; 
   
   let authType = 'login'; 
-  let myGlobalScore = parseInt(localStorage.getItem('neonRiderGlobalScore')) || 0;
+  let myGlobalScore = 0;
   // -------------------------------------------------------
   
-  let totalCoins = parseInt(localStorage.getItem('neonRiderTotalCoins')) || 0;
-  let ownedBikes = JSON.parse(localStorage.getItem('neonRiderOwnedBikes')) || [0];
-  let equippedBike = parseInt(localStorage.getItem('neonRiderEquippedBike')) || 0;
+  let totalCoins = 0;
+  let ownedBikes = [0];
+  let equippedBike = 0;
   let currentRunCoins = 0;
 
   let isCenteredCamera = localStorage.getItem('neonRiderCamera') === 'false' ? false : true;
@@ -319,12 +319,12 @@
     { name: "NIGHTMARE", type: "APEX", color: 0xa855f7, css: "text-purple-500", price: 50000, modelType: 'stealth' }
   ];
 
-  let score = 0, highScore = localStorage.getItem('neonRiderHighScore') || 0, hp = 100, nitro = 100;
+  let score = 0, highScore = 0, hp = 100, nitro = 100;
   let totalDistance = 0, trackLength = 40000, cameraShake = 0;
   let hasFinished = false, finishTimer = 0, finalRankSaved = 1;
   let isMagnetActive = false, magnetTimer = 0, isShieldActive = false, shieldTimer = 0;
-  let timer = 0, bestTime = parseFloat(localStorage.getItem('neonRiderBestTime')) || 0;
-  let gpHighScore = parseInt(localStorage.getItem('neonRiderGPHighScore')) || 0, gpBestRank = parseInt(localStorage.getItem('neonRiderGPBestRank')) || 4;
+  let timer = 0, bestTime = 0;
+  let gpHighScore = 0, gpBestRank = 4;
   let playHistory = JSON.parse(localStorage.getItem('neonRiderHistory')) || [];
 
   let isGlossaryOpen = false, currentGlosIndex = 0;
@@ -586,7 +586,7 @@
     textParticles.push({ el: el, logicX: lx, logicY: ly + 3, logicZ: lz, life: 1.0 }); 
   }
   function triggerScorePop(color) { ui.score.style.color = color; ui.score.style.transform = 'scale(1.5)'; setTimeout(() => { ui.score.style.color = 'white'; ui.score.style.transform = 'scale(1)'; }, 150); }
-  function updateCoinsUI() { ui.mmTotalCoins.innerText = totalCoins; ui.garageTotalCoins.innerText = totalCoins; ui.runCoinsText.innerText = currentRunCoins; localStorage.setItem('neonRiderTotalCoins', totalCoins); }
+  function updateCoinsUI() { ui.mmTotalCoins.innerText = totalCoins; ui.garageTotalCoins.innerText = totalCoins; ui.runCoinsText.innerText = currentRunCoins; }
 
   function fireMissile() {
     let target = null, closestZ = -Infinity; opponents.forEach(op => { if (op.zOffset < 0 && op.zOffset > closestZ) { closestZ = op.zOffset; target = op; } });
@@ -808,7 +808,30 @@
   function openGarage() { isGarageOpen = true; currentGarageIndex = equippedBike; clock.getDelta(); ui.mainMenu.style.display = 'none'; const modal = document.getElementById('garageModal'); modal.style.display = 'flex'; setTimeout(() => { modal.classList.remove('hidden', 'opacity-0'); modal.classList.add('opacity-100', 'pointer-events-auto'); }, 10); updateGarageView(); }
   function closeGarage() { isGarageOpen = false; const modal = document.getElementById('garageModal'); modal.classList.remove('opacity-100', 'pointer-events-auto'); modal.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => { modal.classList.add('hidden'); modal.style.display = 'none'; ui.mainMenu.style.display = 'flex'; }, 300); }
   function changeGarage(dir) { currentGarageIndex = (currentGarageIndex + dir + bikeData.length) % bikeData.length; updateGarageView(); }
-  function buyOrEquipBike() { const data = bikeData[currentGarageIndex]; if (ownedBikes.includes(currentGarageIndex)) { if (equippedBike !== currentGarageIndex) { equippedBike = currentGarageIndex; localStorage.setItem('neonRiderEquippedBike', equippedBike); replacePlayerBike(data); updateGarageView(); } } else { if (totalCoins >= data.price) { totalCoins -= data.price; updateCoinsUI(); ownedBikes.push(currentGarageIndex); localStorage.setItem('neonRiderOwnedBikes', JSON.stringify(ownedBikes)); equippedBike = currentGarageIndex; localStorage.setItem('neonRiderEquippedBike', equippedBike); replacePlayerBike(data); updateGarageView(); } } }
+  function buyOrEquipBike() { 
+    const data = bikeData[currentGarageIndex]; 
+    if (ownedBikes.includes(currentGarageIndex)) { 
+      if (equippedBike !== currentGarageIndex) { 
+        equippedBike = currentGarageIndex; 
+        replacePlayerBike(data); 
+        updateGarageView(); 
+      } 
+    } else { 
+      if (totalCoins >= data.price) { 
+        totalCoins -= data.price; 
+        updateCoinsUI(); 
+        ownedBikes.push(currentGarageIndex); 
+        equippedBike = currentGarageIndex; 
+        replacePlayerBike(data); 
+        updateGarageView(); 
+      } 
+    }
+    
+    if(fbDb && myProfile) {
+        const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myProfile.nickname);
+        fsMod.updateDoc(userRef, { totalCoins, ownedBikes, equippedBike }).catch(()=>{});
+    }
+  }
   function replacePlayerBike(data) { scene.remove(playerBike.group, playerBike.shadowMesh, playerBike.lightTrail); playerBike = createBike(data); scene.add(playerBike.group, playerBike.shadowMesh, playerBike.lightTrail); }
 
   function updateGlossaryView() { glossaryMeshes.forEach((mesh, idx) => { const isCurrent = (idx === currentGlosIndex); mesh.visible = isCurrent; if (isCurrent) { mesh.scale.set(0.1, 0.1, 0.1); mesh.userData.targetScale = 1.0; } }); const data = itemData[currentGlosIndex]; document.getElementById('glosType').innerText = `TYPE: ${data.type}`; const titleEl = document.getElementById('glosTitle'); titleEl.innerText = data.name; titleEl.className = `text-4xl md:text-5xl font-black italic mb-4 drop-shadow-[0_0_10px_currentColor] ${data.color}`; document.getElementById('glosEffect').innerText = data.effect; document.getElementById('glosEffect').parentElement.className = `bg-black/80 border border-current p-2 mb-6 inline-block self-start shadow-[0_0_15px_currentColor] ${data.color}`; document.getElementById('glosDesc').innerText = data.desc; }
@@ -959,7 +982,6 @@
       
       Object.keys(multiOpponentsMap).forEach(uid => {
           const op = multiOpponentsMap[uid];
-          const isP1 = activeRoom.host === myUid;
           // State fetching
           const opState = activeRoom.players[uid]?.state;
           
@@ -1125,7 +1147,7 @@
       bonusCoins = Math.floor(score / 5000) * 10; 
       if (bonusCoins > 0) bonusMsg = `MILESTONE BONUS: +${bonusCoins} C (Score)`;
 
-      if (score > highScore) { highScore = score; localStorage.setItem('neonRiderHighScore', highScore); ui.highScoreText.innerText = Math.floor(highScore); } 
+      if (score > highScore) { highScore = score; ui.highScoreText.innerText = Math.floor(highScore); } 
       ui.finalScore.innerText = Math.floor(score); ui.goRankLine.style.display = 'none'; 
       ui.goTitle.innerText = "SYSTEM FAILURE"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
       saveHistory('SOLO', `Score: ${Math.floor(score)}`); 
@@ -1136,10 +1158,8 @@
       ui.finalRank.innerText = rankString; ui.finalRank.style.color = finalRankSaved === 1 ? '#facc15' : (finalRankSaved === 2 ? '#94a3b8' : '#b45309'); 
       if (isFinish) { 
         ui.goTitle.innerText = "RACE FINISHED!"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-yellow-400 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(250,204,21,1)] text-center"; 
-        let updated = false; 
-        if (finalRankSaved < gpBestRank) { gpBestRank = finalRankSaved; updated = true; } 
-        if (score > gpHighScore) { gpHighScore = score; updated = true; } 
-        if (updated) { localStorage.setItem('neonRiderGPBestRank', gpBestRank); localStorage.setItem('neonRiderGPHighScore', gpHighScore); } 
+        if (finalRankSaved < gpBestRank) { gpBestRank = finalRankSaved; } 
+        if (score > gpHighScore) { gpHighScore = score; } 
         saveHistory('RACE', `Rank: ${rankString} / Score: ${Math.floor(score)}`); 
       } else { 
         ui.goTitle.innerText = "CRASHED"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
@@ -1157,7 +1177,7 @@
 
         ui.finalTimeLine.style.display = 'block'; ui.finalTime.innerText = formatTime(timer); 
         ui.goTitle.innerText = "TIME RECORDED!"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-yellow-400 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(250,204,21,1)] text-center"; 
-        if (bestTime === 0 || timer < bestTime) { bestTime = timer; localStorage.setItem('neonRiderBestTime', bestTime); } 
+        if (bestTime === 0 || timer < bestTime) { bestTime = timer; } 
         saveHistory('TIME_ATTACK', `Time: ${formatTime(timer)}`); 
       } else { 
         ui.goTitle.innerText = "CRASHED"; ui.goTitle.className = "text-5xl md:text-7xl font-black text-red-500 mb-2 tracking-widest italic drop-shadow-[0_0_20px_rgba(239,68,68,1)] text-center"; 
@@ -1192,7 +1212,17 @@
     ui.gameOver.style.display = 'flex';
     
     myGlobalScore += Math.floor(score);
-    localStorage.setItem('neonRiderGlobalScore', myGlobalScore);
+    if(fbDb && myProfile) {
+        const userRef = fsMod.doc(fbDb, 'artifacts', FB_APP_ID, 'public', 'data', 'users', myProfile.nickname);
+        fsMod.updateDoc(userRef, { 
+            globalScore: myGlobalScore,
+            totalCoins: totalCoins,
+            highScore: highScore,
+            gpHighScore: gpHighScore,
+            gpBestRank: gpBestRank,
+            bestTime: bestTime
+        }).catch(()=>{});
+    }
     updatePresence();
   }
 
@@ -1289,17 +1319,27 @@
         const data = docSnap.data();
         if (data.password !== pass) { err.innerText = "비밀번호가 일치하지 않습니다."; return; }
         myProfile = data;
-        myGlobalScore = data.globalScore || myGlobalScore;
+        myGlobalScore = data.globalScore || 0;
+        totalCoins = data.totalCoins || 0;
+        ownedBikes = data.ownedBikes || [0];
+        equippedBike = data.equippedBike || 0;
+        highScore = data.highScore || 0;
+        gpHighScore = data.gpHighScore || 0;
+        gpBestRank = data.gpBestRank || 4;
+        bestTime = data.bestTime || 0;
       } else {
         if (docSnap.exists()) { err.innerText = "이미 사용 중인 닉네임입니다. 다른 닉네임을 사용하세요."; return; }
-        myProfile = { nickname: nick, password: pass, globalScore: myGlobalScore, lastSeen: Date.now(), isOnline: true, uid: myUid };
+        myGlobalScore = 0; totalCoins = 0; ownedBikes = [0]; equippedBike = 0; highScore = 0; gpHighScore = 0; gpBestRank = 4; bestTime = 0;
+        myProfile = { nickname: nick, password: pass, globalScore: 0, totalCoins: 0, ownedBikes: [0], equippedBike: 0, highScore: 0, gpHighScore: 0, gpBestRank: 4, bestTime: 0, lastSeen: Date.now(), isOnline: true, uid: myUid };
         await fsMod.setDoc(userDocRef, myProfile);
       }
 
       await fsMod.updateDoc(userDocRef, { lastSeen: Date.now(), isOnline: true, uid: myUid });
       document.getElementById('loginScreen').style.display = 'none';
       ui.mainMenu.style.display = 'flex';
-      updateCoinsUI();
+      
+      replacePlayerBike(bikeData[equippedBike]);
+      updateMenuRecords();
     } catch(e) {
       console.error(e);
       err.innerText = "작업 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.";
