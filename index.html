@@ -46,6 +46,9 @@
 
 <!-- MAIN MENU -->
 <div id="mainMenu" class="absolute inset-0 bg-black/90 z-50 flex flex-col items-center justify-center backdrop-blur-md hidden">
+  <button onclick="logout()" class="absolute top-6 left-6 md:top-10 md:left-10 px-4 py-2 bg-red-950/40 border-2 border-red-500 text-red-300 hover:bg-red-600 hover:text-white transition-all font-bold tracking-widest text-sm uppercase shadow-[0_0_15px_rgba(239,68,68,0.5)] z-50 flex items-center gap-2 group">
+    <span class="text-xl">🚪</span> LOGOUT
+  </button>
   <div class="absolute top-6 right-6 md:top-10 md:right-10 text-yellow-400 font-black text-2xl md:text-3xl drop-shadow-[0_0_15px_rgba(250,204,21,0.8)] tracking-widest z-50 flex items-center gap-2">
     <span class="text-xl">🪙</span> <span id="mmTotalCoins">0</span>
   </div>
@@ -98,7 +101,7 @@
 </div>
 
 <!-- MULTIPLAYER LOBBY -->
-<div id="lobbyModal" class="absolute inset-0 bg-black/95 z-[55] flex flex-col items-center justify-start py-10 px-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden backdrop-blur-md">
+<div id="lobbyModal" class="absolute inset-0 bg-black/95 z-[55] flex flex-col items-center justify-start py-10 px-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden backdrop-blurmd">
   <div class="absolute top-6 left-6 text-purple-400 font-black text-xl flex items-center gap-2">
     👤 <span id="lobbyMyName">PLAYER</span> <span class="text-sm text-gray-400 block ml-2">TOTAL SCORE: <span id="lobbyMyScore" class="text-white font-mono">0</span></span>
   </div>
@@ -141,23 +144,30 @@
   <div class="flex flex-col gap-8 w-full max-w-xl mt-10 pointer-events-auto p-8 border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-900/20 to-transparent mx-auto">
      <div class="flex justify-between items-center border-b border-gray-700 pb-4">
         <div>
+          <span class="text-xl font-bold text-gray-300 tracking-widest uppercase block">CONTROLS</span>
+          <span class="text-xs text-gray-500">조작 방식 (ARROWS: 방향키 / WASD: 영문키)</span>
+        </div>
+        <button id="toggleControlsBtn" onclick="toggleControls()" class="px-6 py-3 border-2 transition-all font-bold tracking-widest uppercase w-48">ARROWS</button>
+     </div>
+     <div class="flex justify-between items-center border-b border-gray-700 pb-4">
+        <div>
           <span class="text-xl font-bold text-gray-300 tracking-widest uppercase block">CAMERA VIEW</span>
           <span class="text-xs text-gray-500">CENTERED: 트랙이 움직임 / DYNAMIC: 바이크가 움직임</span>
         </div>
-        <button id="toggleCameraBtn" onclick="toggleCamera()" class="px-6 py-3 border-2 transition-all font-bold tracking-widest uppercase w-40">CENTERED</button>
+        <button id="toggleCameraBtn" onclick="toggleCamera()" class="px-6 py-3 border-2 transition-all font-bold tracking-widest uppercase w-48">CENTERED</button>
      </div>
      <div class="flex justify-between items-center pb-2">
         <div>
           <span class="text-xl font-bold text-gray-300 tracking-widest uppercase block">AUDIO & SFX</span>
           <span class="text-xs text-gray-500">향상된 엔진 왜곡음 및 신스 효과음</span>
         </div>
-        <button id="toggleSoundBtn" onclick="toggleSound()" class="px-6 py-3 border-2 transition-all font-bold tracking-widest uppercase w-40">OFF</button>
+        <button id="toggleSoundBtn" onclick="toggleSound()" class="px-6 py-3 border-2 transition-all font-bold tracking-widest uppercase w-48">OFF</button>
      </div>
   </div>
   <button onclick="closeSettings()" class="absolute bottom-10 px-8 py-3 bg-transparent border-2 border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-black transition-all font-bold tracking-widest text-sm uppercase pointer-events-auto">RETURN</button>
 </div>
 
-<!-- GARAGE, GLOSSARY MODALS... -->
+<!-- GARAGE -->
 <div id="garageModal" class="absolute inset-0 bg-gradient-to-r from-transparent to-black/90 z-[60] flex-col items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none hidden">
   <div class="absolute top-10 text-center w-full"><h2 class="text-4xl md:text-5xl font-black text-pink-400 tracking-widest italic drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]">GARAGE</h2></div>
   <div class="absolute top-10 right-10 text-yellow-400 font-black text-2xl drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]">🪙 <span id="garageTotalCoins">0</span></div>
@@ -173,6 +183,7 @@
   <button onclick="closeGarage()" class="absolute bottom-10 px-8 py-3 bg-transparent border-2 border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-black transition-all font-bold tracking-widest text-sm uppercase pointer-events-auto">RETURN</button>
 </div>
 
+<!-- GLOSSARY -->
 <div id="glossaryModal" class="absolute inset-0 bg-gradient-to-r from-transparent to-black/90 z-[60] flex-col items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none hidden">
   <div class="absolute top-10 text-center w-full"><h2 class="text-4xl md:text-5xl font-black text-blue-400 tracking-widest italic drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]">DATABASE</h2></div>
   <div class="flex w-full max-w-5xl h-[60%] items-center mt-10 relative">
@@ -275,7 +286,7 @@
   let activeRoomUnsub = null;
   let isMultiplayer = false;
   let networkTick = 0;
-  let multiOpponentsMap = {}; // uid -> opponents index
+  let multiOpponentsMap = {}; 
   
   let authType = 'login'; 
   let myGlobalScore = parseInt(localStorage.getItem('neonRiderGlobalScore')) || 0;
@@ -288,6 +299,7 @@
 
   let isCenteredCamera = localStorage.getItem('neonRiderCamera') === 'false' ? false : true;
   let isSoundOn = localStorage.getItem('neonRiderSound') === 'true' ? true : false;
+  let controlScheme = localStorage.getItem('neonRiderControls') || 'ARROWS';
   
   // --- Improved Audio System ---
   let engineOsc = null;
@@ -298,10 +310,13 @@
 
   const bikeData = [
     { name: "CYBER BLUE", type: "STANDARD", color: 0x06b6d4, css: "text-cyan-400", price: 0, modelType: 'box' },
-    { name: "NEON MAGENTA", type: "INTERCEPTOR", color: 0xd946ef, css: "text-fuchsia-400", price: 100, modelType: 'wing' },
-    { name: "TOXIC GREEN", type: "HEAVY TANK", color: 0x10b981, css: "text-emerald-400", price: 300, modelType: 'heavy' },
-    { name: "SOLAR FLARE", type: "WEDGE", color: 0xfacc15, css: "text-yellow-400", price: 500, modelType: 'arrow' },
-    { name: "VOID BLACK", type: "STEALTH", color: 0xffffff, css: "text-white", price: 1000, modelType: 'stealth' }
+    { name: "NEON MAGENTA", type: "INTERCEPTOR", color: 0xd946ef, css: "text-fuchsia-400", price: 500, modelType: 'wing' },
+    { name: "TOXIC GREEN", type: "HEAVY TANK", color: 0x10b981, css: "text-emerald-400", price: 1500, modelType: 'heavy' },
+    { name: "SOLAR FLARE", type: "WEDGE", color: 0xfacc15, css: "text-yellow-400", price: 3000, modelType: 'arrow' },
+    { name: "VOID BLACK", type: "STEALTH", color: 0xffffff, css: "text-white", price: 6000, modelType: 'stealth' },
+    { name: "CRIMSON GHOST", type: "ASSASSIN", color: 0xef4444, css: "text-red-500", price: 12000, modelType: 'wing' },
+    { name: "PLASMA BEAST", type: "JUGGERNAUT", color: 0xf97316, css: "text-orange-500", price: 25000, modelType: 'heavy' },
+    { name: "NIGHTMARE", type: "APEX", color: 0xa855f7, css: "text-purple-500", price: 50000, modelType: 'stealth' }
   ];
 
   let score = 0, highScore = localStorage.getItem('neonRiderHighScore') || 0, hp = 100, nitro = 100;
@@ -627,10 +642,20 @@
     const sndBtn = document.getElementById('toggleSoundBtn');
     if(isSoundOn) { sndBtn.innerText = "ON (VROOM!)"; sndBtn.className = "px-6 py-3 border-2 border-cyan-400 text-cyan-400 font-bold tracking-widest uppercase w-48"; }
     else { sndBtn.innerText = "OFF"; sndBtn.className = "px-6 py-3 border-2 border-red-500 text-red-500 font-bold tracking-widest uppercase w-48"; }
+
+    const ctrlBtn = document.getElementById('toggleControlsBtn');
+    if(controlScheme === 'ARROWS') { ctrlBtn.innerText = "ARROWS"; ctrlBtn.className = "px-6 py-3 border-2 border-yellow-400 text-yellow-400 font-bold tracking-widest uppercase w-48"; }
+    else { ctrlBtn.innerText = "WASD"; ctrlBtn.className = "px-6 py-3 border-2 border-green-400 text-green-400 font-bold tracking-widest uppercase w-48"; }
   }
 
   function toggleCamera() { isCenteredCamera = !isCenteredCamera; localStorage.setItem('neonRiderCamera', isCenteredCamera); updateSettingsUI(); }
   
+  window.toggleControls = function() {
+    controlScheme = controlScheme === 'ARROWS' ? 'WASD' : 'ARROWS';
+    localStorage.setItem('neonRiderControls', controlScheme);
+    updateSettingsUI();
+  }
+
   async function toggleSound() {
     isSoundOn = !isSoundOn; localStorage.setItem('neonRiderSound', isSoundOn);
     if(isSoundOn) { await initAudio(); playSfx('coin'); } 
@@ -644,6 +669,13 @@
   function quitGameConfirm() { if (isGameOver) return; isPaused = true; if(engineOsc) engineOsc.stop(); document.getElementById('quitConfirmModal').style.display = 'flex'; document.getElementById('quitConfirmModal').classList.remove('hidden'); }
   function closeQuitConfirm() { document.getElementById('quitConfirmModal').style.display = 'none'; document.getElementById('quitConfirmModal').classList.add('hidden'); clock.getDelta(); isPaused = false; if(isSoundOn && engineOsc) engineOsc.start(); }
 
+  window.logout = async function() {
+    if(fbAuth) {
+        try { await fbAuth.signOut(); } catch(e) {}
+    }
+    location.reload();
+  };
+
   function returnToMenu() {
     ui.gameUI.style.display = 'none';
     ui.gameOver.style.display = 'none';
@@ -656,7 +688,6 @@
     ui.floatingContainer.innerHTML = '';
     ui.nameTagContainer.innerHTML = '';
     
-    // Clear renderer background fix
     renderer.setClearColor(0x050208);
     renderer.clear();
     
@@ -670,8 +701,29 @@
   const gravity = 80; let playerRank = 1;
 
   const keys = { left: false, right: false, boost: false };
-  window.addEventListener('keydown', (e) => { if(!isGameStarted) return; if(e.code === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true; if(e.code === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true; if(e.code === 'Space' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W') keys.boost = true; });
-  window.addEventListener('keyup', (e) => { if(e.code === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false; if(e.code === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false; if(e.code === 'Space' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W') keys.boost = false; });
+  window.addEventListener('keydown', (e) => { 
+    if(!isGameStarted) return; 
+    if (controlScheme === 'ARROWS') {
+      if(e.code === 'ArrowLeft') keys.left = true; 
+      if(e.code === 'ArrowRight') keys.right = true; 
+      if(e.code === 'Space' || e.code === 'ArrowUp') keys.boost = true;
+    } else {
+      if(e.key === 'a' || e.key === 'A') keys.left = true; 
+      if(e.key === 'd' || e.key === 'D') keys.right = true; 
+      if(e.code === 'Space' || e.key === 'w' || e.key === 'W') keys.boost = true;
+    }
+  });
+  window.addEventListener('keyup', (e) => { 
+    if (controlScheme === 'ARROWS') {
+      if(e.code === 'ArrowLeft') keys.left = false; 
+      if(e.code === 'ArrowRight') keys.right = false; 
+      if(e.code === 'Space' || e.code === 'ArrowUp') keys.boost = false;
+    } else {
+      if(e.key === 'a' || e.key === 'A') keys.left = false; 
+      if(e.key === 'd' || e.key === 'D') keys.right = false; 
+      if(e.code === 'Space' || e.key === 'w' || e.key === 'W') keys.boost = false;
+    }
+  });
   window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); glossaryCamera.aspect = window.innerWidth / window.innerHeight; glossaryCamera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 
   const clock = new THREE.Clock();
@@ -713,14 +765,12 @@
     } else if (mode === 'MULTI_RACE') {
       ui.rankPanel.style.display = 'block'; ui.minimapUI.style.display = 'block'; ui.highScoreUI.style.display = 'none'; ui.scorePanel.style.display = 'block';
       
-      // Hide all initially
       opponents.forEach(op => { op.bike.group.visible = false; op.bike.shadowMesh.visible = false; op.bike.lightTrail.visible = false; op.mmDot.style.display = 'none'; });
       multiOpponentsMap = {};
       
       let opIndex = 0;
       let totalPlayers = 1;
       
-      // Map other players in room to opponent slots (max 3)
       if (activeRoom && activeRoom.players) {
          Object.keys(activeRoom.players).forEach(uid => {
              if (uid !== myUid && opIndex < 3) {
@@ -1157,11 +1207,9 @@
         fsMod = fs;
         
         let config;
-        // 캔버스 환경과 깃허브 배포 환경을 모두 지원하도록 설정
         if (typeof __firebase_config !== 'undefined' && __firebase_config) {
             config = JSON.parse(__firebase_config);
         } else {
-            // 사용자님의 실제 Firebase 프로젝트 설정
             config = {
                 apiKey: "AIzaSyDv_3fBGVykf479utHX982QX4r4L90p5-g",
                 authDomain: "neon-driver.firebaseapp.com",
